@@ -1,40 +1,44 @@
 /*
 Copyright © 2026 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
+
+var name string
 
 // aiCmd represents the ai command
 var aiCmd = &cobra.Command{
 	Use:   "ai",
 	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Long:  `A longer description that spans multiple lines and likely contains.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("ai called")
+		reader := bufio.NewReader(os.Stdin)
+
+		for {
+			fmt.Print("Enter your name (type exit to stop): ")
+			input, _ := reader.ReadString('\n')
+			input = strings.TrimSpace(input)
+
+			if input == "exit" {
+				fmt.Println("Bye 👋")
+				break
+			}
+
+			fmt.Println("Hello", input)
+
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(aiCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// aiCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// aiCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	aiCmd.Flags().StringVarP(&name, "name", "n", "Abdul Alim", "user name")
 }
